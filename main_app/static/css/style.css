@@ -16,3 +16,15 @@ footer.page-footer {
 .nav-wrapper, .page-footer {
   background: linear-gradient(to right, #77a1d3, #79cbca, #e684ae);
 }
+
+div.card-content {
+  color: #e684ae;
+}
+
+input.btn {
+  background: #77a1d3;
+}
+
+input.btn:hover {
+  background: #79cbca;
+}
