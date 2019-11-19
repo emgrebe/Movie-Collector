@@ -1,10 +1,17 @@
 from django.shortcuts import render
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import Movie
 
 class MovieCreate(CreateView):
   model = Movie
   fields = '__all__'
+
+class MovieUpdate(UpdateView):
+  model = Movie
+  fields = ['year', 'description']
+
+class MovieDelete(DeleteView):
+  model = Movie
   success_url = '/movies/'
 
 def home(request):

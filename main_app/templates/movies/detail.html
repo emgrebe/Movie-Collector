@@ -9,6 +9,10 @@
     <p>Year: {{ movie.year }}</p>
     <p>Description: {{ movie.description }}</p>
   </div>
+  <div class="card-action">
+    <a href="{% url 'movies_update' movie.id %}" class="option">Edit</a>
+    <a href="{% url 'movies_delete' movie.id %}" class="option">Delete</a>
+  </div>
 </div>
 
 {% endblock %}

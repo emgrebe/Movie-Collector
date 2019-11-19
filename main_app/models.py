@@ -9,5 +9,5 @@ class Movie(models.Model):
   def __str__(self):
     return self.title
   
-  def get_Absolute_url(self):
-    return reverse('detail', kwargs={'movie_id': self.id})
+  def get_absolute_url(self):
+    return reverse('detail', kwargs={ 'movie_id': self.id })

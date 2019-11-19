@@ -28,3 +28,7 @@ input.btn {
 input.btn:hover {
   background: #79cbca;
 }
+
+.card .card-action a:not(.btn):not(.btn-large):not(.btn-small):not(.btn-large):not(.btn-floating) {
+  color: #77a1d3;
+}
