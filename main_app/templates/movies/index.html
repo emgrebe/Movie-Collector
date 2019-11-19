@@ -4,14 +4,15 @@
 <h1>Movie List</h1>
 
 {% for movie in movies %}
-  <div class="card">
-    <div class="card-content">
-      <span class="card-title">{{ movie.title }}</span>
-      <p>Year: {{ movie.year }}</p>
-      <p>Actors: {{ movie.actors }}</p>
-      <p>Description: {{ movie.description }}</p>
+  <a href="{% url 'detail' movie.id %}">
+    <div class="card">
+      <div class="card-content">
+        <span class="card-title">{{ movie.title }}</span>
+        <p>Year: {{ movie.year }}</p>
+        <p>Description: {{ movie.description }}</p>
+      </div>
     </div>
-  </div>
+  </a>
 {% endfor %}
 
 {% endblock %}
