@@ -1,7 +1,5 @@
 from django.shortcuts import render
 
-from django.http import HttpResponse
-
 class Movie:
   def __init__(self, title, year, actors, description):
     self.title = title
@@ -16,7 +14,7 @@ movies = [
 ]
 
 def home(request):
-  return HttpResponse('<h1>Hello</h1>')
+  return render(request, 'home.html')
 
 def about(request):
   return render(request, 'about.html')
