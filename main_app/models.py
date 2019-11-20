@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from datetime import date
 
 TIMES = (
   ('M', 'Morning'),
@@ -7,10 +8,21 @@ TIMES = (
   ('E', 'Evening')
 )
 
+class Review(models.Model):
+  rating = models.IntegerField()
+  comment = models.TextField(max_length=250)
+
+  def __str__(self):
+    return self.rating
+
+  def get_absolute_url(self):
+    return reverse('reviews_detail', kwargs={'pk': self.id})
+
 class Movie(models.Model):
   title = models.CharField(max_length=100)
   year = models.IntegerField()
   description = models.TextField(max_length=150)
+  reviews = models.ManyToManyField(Review)
 
   def __str__(self):
     return self.title
