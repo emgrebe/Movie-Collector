@@ -32,3 +32,11 @@ input.btn:hover {
 .card .card-action a:not(.btn):not(.btn-large):not(.btn-small):not(.btn-large):not(.btn-floating) {
   color: #77a1d3;
 }
+
+div.datepicker-date-display, .datepicker-table td.is-selected {
+  background: #79cbca; 
+}
+
+.btn-flat{
+  color: #79cbca;
+}
