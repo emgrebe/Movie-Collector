@@ -8,12 +8,25 @@ TIMES = (
   ('E', 'Evening')
 )
 
+RATINGS = (
+  ('1', 'Do Not Watch Again'),
+  ('2', 'Did Not Like It'),
+  ('3', 'It Was Kinda Good'),
+  ('4', 'I Liked It'),
+  ('5', 'I Loved This Movie')
+)
+
 class Review(models.Model):
-  rating = models.IntegerField()
   comment = models.TextField(max_length=250)
+  rating = models.CharField(
+    max_length=1,
+    choices=RATINGS,
+    default=RATINGS[0][0]
+  )
 
   def __str__(self):
-    return self.rating
+    return f"{self.get_comment_display()} on {self.rating}"
+
 
   def get_absolute_url(self):
     return reverse('reviews_detail', kwargs={'pk': self.id})
@@ -31,7 +44,7 @@ class Movie(models.Model):
     return reverse('detail', kwargs={ 'movie_id': self.id })
 
 class Watching(models.Model):
-  date = models.DateField('watch date')
+  date = models.DateField('Watch Date')
   time = models.CharField(
     max_length=1,
     choices=TIMES,

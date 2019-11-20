@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.views.generic import  DetailView, ListView
+# from django.views.generic import  DetailView, ListView
 from .models import Movie, Review
-from .forms import WatchingForm
+from .forms import WatchingForm, ReviewForm
 
 class MovieCreate(CreateView):
   model = Movie
@@ -28,9 +28,11 @@ def movies_index(request):
 
 def movies_detail(request, movie_id):
   movie = Movie.objects.get(id=movie_id)
+  review_form = ReviewForm()
   watching_form = WatchingForm()
   return render(request, 'movies/detail.html', { 
-    'movie': movie, 'watching_form': watching_form 
+    'movie': movie, 'watching_form': watching_form,
+    'review_form': review_form
   })
 
 def add_watching(request, movie_id):
@@ -41,20 +43,28 @@ def add_watching(request, movie_id):
     new_watching.save()
   return redirect('detail', movie_id=movie_id)
 
-class ReviewList(ListView):
-  model = Review
+def add_review(request, movie_id):
+  form = ReviewForm(request.POST)
+  if form.is_valid():
+    new_review = form.save(commit=False)
+    new_review.movie_id = movie_id
+    new_review.save()
+  return redirect('detail', movie_id=movie_id)
 
-class ReviewDetail(DetailView):
-  model = Review
+# class ReviewList(ListView):
+#   model = Review
 
-class ReviewCreate(CreateView):
-  model = Review
-  fields='__all__'
+# class ReviewDetail(DetailView):
+#   model = Review
 
-class ReviewUpdate(UpdateView):
-  model = Review
-  fields = ['rating', 'comment']
+# class ReviewCreate(CreateView):
+#   model = Review
+#   fields='__all__'
 
-class ReviewDelete(DeleteView):
-  modle = Review
-  success_url = '/reviews/'
+# class ReviewUpdate(UpdateView):
+#   model = Review
+#   fields = ['rating', 'comment']
+
+# class ReviewDelete(DeleteView):
+#   modle = Review
+#   success_url = '/reviews/'
