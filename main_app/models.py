@@ -18,15 +18,10 @@ RATINGS = (
 
 class Review(models.Model):
   comment = models.TextField(max_length=250)
-  rating = models.CharField(
-    max_length=1,
-    choices=RATINGS,
-    default=RATINGS[0][0]
-  )
+  rating = models.IntegerField()
 
   def __str__(self):
-    return f"{self.get_comment_display()} on {self.rating}"
-
+    return self.rating
 
   def get_absolute_url(self):
     return reverse('reviews_detail', kwargs={'pk': self.id})
