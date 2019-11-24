@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .forms import WatchingForm, ReviewForm
-from .models import Movie, Review, Photo
+from .models import Movie, Photo
 import uuid
 import boto3
 
@@ -56,18 +56,13 @@ def add_review(request, movie_id):
   return redirect('detail', movie_id=movie_id)
 
 def add_photo(request, movie_id):
-    # photo-file will be the "name" attribute on the <input type="file">
     photo_file = request.FILES.get('photo-file', None)
     if photo_file:
         s3 = boto3.client('s3')
-        # need a unique "key" for S3 / needs image file extension too
         key = uuid.uuid4().hex[:6] + photo_file.name[photo_file.name.rfind('.'):]
-        # just in case something goes wrong
         try:
             s3.upload_fileobj(photo_file, BUCKET, key)
-            # build the full url string
             url = f"{S3_BASE_URL}{BUCKET}/{key}"
-            # we can assign to movie_id or movie (if you have a movie object)
             photo = Photo(url=url, movie_id=movie_id)
             photo.save()
         except:
