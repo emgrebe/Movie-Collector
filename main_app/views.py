@@ -1,8 +1,12 @@
 from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-# from django.views.generic import  DetailView, ListView
-from .models import Movie, Review
 from .forms import WatchingForm, ReviewForm
+from .models import Movie, Review, Photo
+import uuid
+import boto3
+
+S3_BASE_URL = 'https://s3-us-east-2.amazonaws.com/'
+BUCKET = 'moviecollect'
 
 class MovieCreate(CreateView):
   model = Movie
@@ -51,20 +55,21 @@ def add_review(request, movie_id):
     new_review.save()
   return redirect('detail', movie_id=movie_id)
 
-# class ReviewList(ListView):
-#   model = Review
-
-# class ReviewDetail(DetailView):
-#   model = Review
-
-# class ReviewCreate(CreateView):
-#   model = Review
-#   fields='__all__'
-
-# class ReviewUpdate(UpdateView):
-#   model = Review
-#   fields = ['rating', 'comment']
-
-# class ReviewDelete(DeleteView):
-#   modle = Review
-#   success_url = '/reviews/'
+def add_photo(request, movie_id):
+    # photo-file will be the "name" attribute on the <input type="file">
+    photo_file = request.FILES.get('photo-file', None)
+    if photo_file:
+        s3 = boto3.client('s3')
+        # need a unique "key" for S3 / needs image file extension too
+        key = uuid.uuid4().hex[:6] + photo_file.name[photo_file.name.rfind('.'):]
+        # just in case something goes wrong
+        try:
+            s3.upload_fileobj(photo_file, BUCKET, key)
+            # build the full url string
+            url = f"{S3_BASE_URL}{BUCKET}/{key}"
+            # we can assign to movie_id or movie (if you have a movie object)
+            photo = Photo(url=url, movie_id=movie_id)
+            photo.save()
+        except:
+            print('An error occurred uploading file to S3')
+    return redirect('detail', movie_id=movie_id)
